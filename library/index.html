@@ -194,10 +194,6 @@
     function render(){
       buildChips();
       const items = filterDocs();
-      $('countDocs').textContent = DOCS.length;
-      $('countCats').textContent = categories.length;
-      $('countAuthors').textContent = uniqueAuthorsCount();
-      $('countVisible').textContent = items.length;
       $('grid').innerHTML = items.length ? items.map(card).join('') : `<article class="card"><h3>No documents found</h3><div class="help">Try another search or clear the category filter.</div></article>`;
       document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', (e) => {
         e.preventDefault();
