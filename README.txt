@@ -1,0 +1,1 @@
+Upload these files directly to your GitHub repo root. Then import repo to Vercel. The library lives at /library/ and is a single-file page, so CSS/JS/books cannot break due to missing asset paths.
