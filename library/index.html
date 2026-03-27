@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/png" href="assets/favicon.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Avdharna Digital Library</title>
@@ -62,7 +63,31 @@
     footer{text-align:center;color:var(--muted);font-size:13px;margin:24px 0 8px}
     @media (max-width:1080px){.main{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr));}}
     @media (max-width:680px){.shell{padding:14px}.hero{padding:16px;align-items:flex-start}.stats{grid-template-columns:1fr 1fr;gap:12px}.stat .num{font-size:28px}.toolbar{flex-direction:column;align-items:stretch}.toolbar select{min-width:auto}}
-  </style>
+  
+.clear-filters-btn{
+  border:1px solid #d8ccb8;
+  background:#f7f2e8;
+  color:#243128;
+  border-radius:999px;
+  padding:10px 16px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s ease;
+  margin-left:auto;
+  margin-right:12px;
+}
+.clear-filters-btn:hover{
+  background:#efe6d6;
+}
+@media (max-width: 900px){
+  .clear-filters-btn{
+    margin-left:0;
+    margin-right:0;
+  }
+}
+
+</style>
 </head>
 <body>
   <div class="shell">
@@ -93,6 +118,7 @@
       <main class="panel">
         <div class="toolbar">
           <h2 style="margin:0;">Document Catalogue</h2>
+<button id="clearFiltersBtn" class="clear-filters-btn">Clear Filters</button>
           <select id="sortSelect">
             <option value="title-asc">Sort: Title A–Z</option>
             <option value="title-desc">Sort: Title Z–A</option>
