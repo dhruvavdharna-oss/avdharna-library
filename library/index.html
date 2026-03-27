@@ -3,212 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Avdharna Knowledge Library</title>
+  <title>Avdharna Digital Library</title>
   <style>
-    :root {
-      --bg: #f4f2ec;
-      --card: #ffffff;
-      --text: #1f2a1f;
-      --muted: #617162;
-      --line: #d8d3c5;
-      --brand: #d88b13;
-      --brand-deep: #8f5b0b;
-      --accent: #23392d;
-      --soft: #ece7da;
-      --shadow: 0 10px 30px rgba(25,30,25,.08);
+    :root{
+      --bg:#f5f1e8;
+      --card:#fffdfa;
+      --line:#ddd4c4;
+      --text:#253127;
+      --muted:#667463;
+      --brand:#d88b13;
+      --deep:#1f3a2e;
+      --soft:#eee7d8;
+      --ok:#e8f5ec;
+      --shadow:0 12px 30px rgba(32,42,31,.08);
     }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: Inter, Arial, sans-serif; background:var(--bg); color:var(--text); }
-    .shell { max-width: 1320px; margin:0 auto; padding: 28px; }
-    .topbar { display:flex; align-items:center; gap:18px; background:linear-gradient(135deg,#fff,#f6f2e7); border:1px solid var(--line); border-radius:24px; padding:22px 26px; box-shadow:var(--shadow); }
-    .logo-wrap { width:84px; height:84px; border-radius:18px; background:#fff9ef; display:grid; place-items:center; border:1px solid #efd8ab; flex:0 0 auto; }
-    .logo-wrap img { max-width:64px; max-height:64px; }
-    .head h1 { margin:0; font-size: clamp(28px, 4vw, 40px); letter-spacing:-.02em; }
-    .head p { margin:6px 0 0; color:var(--muted); font-size:15px; }
-    .meta { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:16px; margin:22px 0; }
-    .stat { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; box-shadow:var(--shadow); }
-    .stat .n { font-size:34px; font-weight:800; color:var(--accent); }
-    .stat .l { color:var(--muted); font-size:14px; margin-top:6px; }
-    .layout { display:grid; grid-template-columns: 320px 1fr; gap:22px; align-items:start; }
-    .panel { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:20px; box-shadow:var(--shadow); }
-    .panel h2 { margin:0 0 14px; font-size:20px; }
-    .searchbox input, .toolbar select { width:100%; padding:13px 14px; border-radius:14px; border:1px solid var(--line); font-size:15px; background:#fff; }
-    .small { color:var(--muted); font-size:13px; line-height:1.55; }
-    .chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
-    .chip { border:1px solid var(--line); background:#faf8f2; color:var(--text); padding:10px 12px; border-radius:999px; font-size:13px; cursor:pointer; }
-    .chip.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-    .clear-btn { margin-top:12px; background:none; border:none; color:var(--brand-deep); font-weight:700; cursor:pointer; padding:0; }
-    .toolbar { display:flex; justify-content:space-between; gap:14px; align-items:center; margin-bottom:16px; }
-    .catalogue { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px; }
-    .card { background:linear-gradient(180deg,#fff,#fdfcf8); border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; }
-    .doc-top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
-    .doc-top h3 { margin:0; font-size:19px; line-height:1.32; }
-    .badge { padding:7px 10px; border-radius:999px; font-size:12px; font-weight:700; white-space:nowrap; }
-    .available { background:#e9f6ed; color:#20603a; }
-    .catalogued { background:#f2efe6; color:#7a6635; }
-    .kv { display:grid; grid-template-columns: 110px 1fr; gap:8px 10px; font-size:14px; }
-    .kv div:nth-child(odd) { color:var(--muted); }
-    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:auto; padding-top:6px; }
-    .btn { text-decoration:none; padding:11px 14px; border-radius:14px; font-weight:700; font-size:14px; display:inline-flex; align-items:center; justify-content:center; border:1px solid transparent; }
-    .btn.primary { background:var(--accent); color:#fff; }
-    .btn.secondary { background:#fff; color:var(--accent); border-color:var(--line); }
-    .btn.disabled { background:#f2f0ea; color:#a0947a; border-color:#e3dece; cursor:not-allowed; pointer-events:none; }
-    .viewer-modal { position:fixed; inset:0; background:rgba(16,18,16,.58); display:none; align-items:center; justify-content:center; padding:20px; z-index:50; }
-    .viewer-modal.open { display:flex; }
-    .viewer { width:min(1200px,100%); height:min(90vh,900px); background:#fff; border-radius:22px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.25); display:flex; flex-direction:column; }
-    .viewer-head { display:flex; justify-content:space-between; gap:16px; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line); background:#faf7ee; }
-    .viewer-head strong { font-size:16px; }
-    .viewer-frame { flex:1; width:100%; border:0; background:#f4f4f4; }
-    .close { border:none; background:var(--accent); color:#fff; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700; }
-    footer { margin:26px 0 8px; color:var(--muted); font-size:13px; text-align:center; }
-    @media (max-width: 1024px) { .layout{grid-template-columns:1fr;} .catalogue{grid-template-columns:1fr;} .meta{grid-template-columns: repeat(2,minmax(0,1fr));} }
-    @media (max-width: 640px) { .shell{padding:16px;} .topbar{padding:16px; align-items:flex-start;} .meta{grid-template-columns:1fr 1fr; gap:12px;} .stat .n{font-size:28px;} .toolbar{flex-direction:column; align-items:stretch;} }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#f8f4ec 0,#f2ede2 100%);color:var(--text)}
+    .shell{max-width:1360px;margin:0 auto;padding:24px}
+    .hero{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,#fff,#f8f2e6);border:1px solid var(--line);border-radius:26px;padding:24px 28px;box-shadow:var(--shadow)}
+    .logo{width:84px;height:84px;border-radius:20px;background:#fff8eb;border:1px solid #ecd7ae;display:grid;place-items:center;flex:0 0 auto}
+    .logo img{max-width:62px;max-height:62px}
+    .hero h1{margin:0;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em}
+    .hero p{margin:6px 0 0;color:var(--muted);font-size:15px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:20px 0}
+    .stat,.panel,.card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
+    .stat{border-radius:20px;padding:20px}
+    .stat .num{font-size:34px;font-weight:800;color:var(--deep)}
+    .stat .lab{margin-top:6px;font-size:13px;color:var(--muted)}
+    .main{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+    .panel{border-radius:24px;padding:20px}
+    .panel h2{margin:0 0 12px;font-size:20px}
+    .help{font-size:13px;line-height:1.6;color:var(--muted)}
+    .search{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);font-size:15px;background:#fff}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .chip{padding:10px 12px;border-radius:999px;border:1px solid var(--line);background:#faf7f1;color:var(--text);font-size:13px;cursor:pointer}
+    .chip.active{background:var(--deep);color:#fff;border-color:var(--deep)}
+    .clear{margin-top:12px;border:none;background:none;color:#8b5c14;font-weight:700;cursor:pointer;padding:0}
+    .toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+    .toolbar select{padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fff;font-size:14px;min-width:210px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .card{border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,#fff,#fcfaf5)}
+    .title-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .title-row h3{margin:0;font-size:20px;line-height:1.3}
+    .tag{padding:7px 10px;border-radius:999px;background:var(--ok);color:#21593b;font-size:12px;font-weight:700;white-space:nowrap}
+    .meta{display:grid;grid-template-columns:92px 1fr;gap:8px 10px;font-size:14px}
+    .meta div:nth-child(odd){color:var(--muted)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:11px 14px;border-radius:14px;font-size:14px;font-weight:700}
+    .btn.primary{background:var(--deep);color:#fff}
+    .btn.secondary{background:#fff;color:var(--deep);border:1px solid var(--line)}
+    .viewer-overlay{position:fixed;inset:0;background:rgba(10,14,11,.62);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+    .viewer-overlay.open{display:flex}
+    .viewer{width:min(1220px,100%);height:min(92vh,920px);background:#fff;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 35px 90px rgba(0,0,0,.3)}
+    .viewer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:#faf5ea}
+    .viewer-head strong{font-size:16px}
+    .viewer iframe{flex:1;border:0;width:100%}
+    .close{border:none;background:var(--deep);color:#fff;padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+    footer{text-align:center;color:var(--muted);font-size:13px;margin:24px 0 8px}
+    @media (max-width:1080px){.main{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media (max-width:680px){.shell{padding:14px}.hero{padding:16px;align-items:flex-start}.stats{grid-template-columns:1fr 1fr;gap:12px}.stat .num{font-size:28px}.toolbar{flex-direction:column;align-items:stretch}.toolbar select{min-width:auto}}
   </style>
 </head>
 <body>
   <div class="shell">
-    <header class="topbar">
-      <div class="logo-wrap"><img src="assets/logo.png" alt="Avdharna logo"></div>
-      <div class="head">
-        <h1>Avdharna Knowledge Library</h1>
-        <p>Internal reference collection across environment, planning, design, valuation, farming and sustainability domains.</p>
+    <header class="hero">
+      <div class="logo"><img src="assets/logo.png" alt="Avdharna logo"></div>
+      <div>
+        <h1>Avdharna Digital Library</h1>
+        <p>Institutional document repository for environment, compliance, engineering, EMS, GIS and risk reference material.</p>
       </div>
     </header>
 
-    <section class="meta">
-      <div class="stat"><div class="n" id="totalDocs">0</div><div class="l">Documents catalogued</div></div>
-      <div class="stat"><div class="n" id="totalCats">0</div><div class="l">Knowledge categories</div></div>
-      <div class="stat"><div class="n" id="localDocs">0</div><div class="l">Local PDFs available</div></div>
-      <div class="stat"><div class="n" id="visibleDocs">0</div><div class="l">Documents in current view</div></div>
+    <section class="stats">
+      <div class="stat"><div class="num" id="countDocs">0</div><div class="lab">Uploaded PDF documents</div></div>
+      <div class="stat"><div class="num" id="countCats">0</div><div class="lab">Active categories</div></div>
+      <div class="stat"><div class="num" id="countAuthors">0</div><div class="lab">Authors / editors listed</div></div>
+      <div class="stat"><div class="num" id="countVisible">0</div><div class="lab">Documents in current view</div></div>
     </section>
 
-    <section class="layout">
+    <section class="main">
       <aside class="panel">
-        <h2>Library Controls</h2>
-        <div class="searchbox"><input id="searchInput" type="search" placeholder="Search by title, category, ID or source"></div>
-        <div style="height:14px"></div>
-        <div class="small">Filter by category to browse the collection like an institutional document shelf.</div>
+        <h2>Browse Repository</h2>
+        <input class="search" id="searchInput" type="search" placeholder="Search by title, author, type or category" />
         <div class="chips" id="chips"></div>
-        <button class="clear-btn" id="clearFilters">Clear filters</button>
+        <button class="clear" id="clearBtn">Clear filters</button>
         <hr style="border:none;border-top:1px solid var(--line);margin:18px 0;">
-        <h2 style="font-size:18px;">Usage</h2>
-        <div class="small">
-          View Document opens the PDF inside the website viewer.<br><br>
-          Download Copy saves the same local PDF directly.<br><br>
-          Entries marked Catalogued are part of the library register and can receive local PDFs later without changing the system.
+        <div class="help">
+          <strong>How to use</strong><br><br>
+          View Online opens the PDF inside the website viewer.<br><br>
+          Download PDF saves the same file directly to your device.<br><br>
+          Only uploaded PDFs are shown in this repository.
         </div>
       </aside>
 
       <main class="panel">
         <div class="toolbar">
-          <h2 style="margin:0;">Document Repository</h2>
+          <h2 style="margin:0;">Document Catalogue</h2>
           <select id="sortSelect">
             <option value="title-asc">Sort: Title A–Z</option>
             <option value="title-desc">Sort: Title Z–A</option>
+            <option value="author-asc">Sort: Author A–Z</option>
             <option value="category-asc">Sort: Category</option>
-            <option value="id-asc">Sort: Document ID</option>
-            <option value="status-desc">Sort: Available first</option>
           </select>
         </div>
-        <div class="catalogue" id="catalogue"></div>
+        <div class="grid" id="grid"></div>
       </main>
     </section>
 
-    <footer>© Avdharna Infrasol Pvt. Ltd. | Knowledge & Reference Library</footer>
+    <footer>© Avdharna Infrasol Pvt. Ltd. | Digital Library</footer>
   </div>
 
-  <div class="viewer-modal" id="viewerModal" aria-hidden="true">
+  <div class="viewer-overlay" id="viewerOverlay">
     <div class="viewer">
       <div class="viewer-head">
         <strong id="viewerTitle">Document Viewer</strong>
         <button class="close" id="closeViewer">Close</button>
       </div>
-      <iframe id="viewerFrame" class="viewer-frame" title="PDF viewer"></iframe>
+      <iframe id="viewerFrame" title="PDF Viewer"></iframe>
     </div>
   </div>
 
   <script>
-    const BOOKS = [{"id": "ENV-EIA-001", "title": "Environmental Impact Assessment Methodologies", "category": "Environmental Impact Assessment", "source": "Technical Manual", "status": "Available", "year": "", "localPdf": "pdfs/ENV-EIA-001.pdf", "keywords": "reference manual guidance standard", "notes": "Available for online viewing and download"}, {"id": "ENV-EIA-002", "title": "Methods of Environmental Impact Assessment", "category": "Environmental Impact Assessment", "source": "Academic Reference", "status": "Available", "year": "", "localPdf": "pdfs/ENV-EIA-002.pdf", "keywords": "reference manual guidance standard", "notes": "Available for online viewing and download"}, {"id": "ENV-EIA-003", "title": "Handbook of Environmental Impact Assessment", "category": "Environmental Impact Assessment", "source": "Handbook", "status": "Available", "year": "", "localPdf": "pdfs/ENV-EIA-003.pdf", "keywords": "reference manual guidance standard", "notes": "Available for online viewing and download"}, {"id": "ENV-EIA-004", "title": "Introduction to Environmental Impact Assessment", "category": "Environmental Impact Assessment", "source": "Standard Text", "status": "Available", "year": "", "localPdf": "pdfs/ENV-EIA-004.pdf", "keywords": "reference manual guidance standard", "notes": "Available for online viewing and download"}, {"id": "ENV-EIA-005", "title": "Environmental Impact Assessment Guidance Manual", "category": "Environmental Impact Assessment", "source": "Guidance Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ENV-EIA-006", "title": "EIA Notification 2006 with Amendments", "category": "Environmental Impact Assessment", "source": "Regulatory Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ENV-EIA-007", "title": "Environmental Management Plan Guidelines", "category": "Environmental Impact Assessment", "source": "Technical Guidance", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ENV-EIA-008", "title": "Strategic Environmental Assessment Guidelines", "category": "Environmental Impact Assessment", "source": "Policy Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-001", "title": "Neufert Architects’ Data", "category": "Architecture & Built Environment", "source": "Design Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-002", "title": "Time-Saver Standards for Building Types", "category": "Architecture & Built Environment", "source": "Design Standard", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-003", "title": "Building Construction Handbook", "category": "Architecture & Built Environment", "source": "Technical Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-004", "title": "National Building Code of India", "category": "Architecture & Built Environment", "source": "Code Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-005", "title": "Architectural Graphic Standards", "category": "Architecture & Built Environment", "source": "Standards Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-006", "title": "Climate Responsive Architecture", "category": "Architecture & Built Environment", "source": "Sustainability Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-007", "title": "Green Building Handbook", "category": "Architecture & Built Environment", "source": "Green Building Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ARCH-008", "title": "Materials for Sustainable Sites", "category": "Architecture & Built Environment", "source": "Material Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-001", "title": "BIM Handbook", "category": "BIM & GIS", "source": "Technical Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-002", "title": "Autodesk BIM Management Guide", "category": "BIM & GIS", "source": "Practice Guide", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-003", "title": "GIS Fundamentals", "category": "BIM & GIS", "source": "Core Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-004", "title": "Remote Sensing and Image Interpretation", "category": "BIM & GIS", "source": "Technical Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-005", "title": "QGIS Training Manual", "category": "BIM & GIS", "source": "Software Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-006", "title": "GIS for Environmental Planning", "category": "BIM & GIS", "source": "Planning Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-007", "title": "Spatial Analysis in GIS", "category": "BIM & GIS", "source": "Analytical Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "BIM-GIS-008", "title": "Digital Twins for the Built Environment", "category": "BIM & GIS", "source": "Emerging Practice", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-001", "title": "Principles of Property Valuation", "category": "Valuation & Real Estate", "source": "Professional Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-002", "title": "Income Approach to Valuation", "category": "Valuation & Real Estate", "source": "Valuation Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-003", "title": "Cost Approach and Depreciation Analysis", "category": "Valuation & Real Estate", "source": "Valuation Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-004", "title": "Land Valuation and Market Analysis", "category": "Valuation & Real Estate", "source": "Land Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-005", "title": "Urban Land Economics", "category": "Valuation & Real Estate", "source": "Academic Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-006", "title": "Real Estate Finance and Investments", "category": "Valuation & Real Estate", "source": "Finance Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-007", "title": "RERA Framework and Practice Guide", "category": "Valuation & Real Estate", "source": "Regulatory Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "VAL-008", "title": "International Valuation Standards", "category": "Valuation & Real Estate", "source": "Standards Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-001", "title": "Organic Farming Manual", "category": "Organic Farming & Soil Health", "source": "Field Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-002", "title": "Soil Health Management", "category": "Organic Farming & Soil Health", "source": "Agronomy Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-003", "title": "Composting and Vermicomposting Techniques", "category": "Organic Farming & Soil Health", "source": "Practice Guide", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-004", "title": "Natural Farming Principles", "category": "Organic Farming & Soil Health", "source": "Practice Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-005", "title": "Permaculture Design Manual", "category": "Organic Farming & Soil Health", "source": "Design Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-006", "title": "Biofertilizers and Biopesticides Guide", "category": "Organic Farming & Soil Health", "source": "Input Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-007", "title": "Agroforestry Systems for India", "category": "Organic Farming & Soil Health", "source": "Land Use Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "ORG-008", "title": "Sustainable Agriculture and Rural Ecology", "category": "Organic Farming & Soil Health", "source": "Academic Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-001", "title": "Sustainable Cities", "category": "Sustainable Cities & Urban Planning", "source": "Urban Policy Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-002", "title": "UN-Habitat Urban Planning Guidelines", "category": "Sustainable Cities & Urban Planning", "source": "International Guidance", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-003", "title": "Smart Cities Mission Framework", "category": "Sustainable Cities & Urban Planning", "source": "Policy Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-004", "title": "Transit-Oriented Development Handbook", "category": "Sustainable Cities & Urban Planning", "source": "Mobility Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-005", "title": "Climate Resilient Cities", "category": "Sustainable Cities & Urban Planning", "source": "Resilience Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-006", "title": "Urban Sustainability Indicators", "category": "Sustainable Cities & Urban Planning", "source": "Metrics Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-007", "title": "Circular Economy for Cities", "category": "Sustainable Cities & Urban Planning", "source": "Systems Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SUS-008", "title": "Net Zero Urban Systems", "category": "Sustainable Cities & Urban Planning", "source": "Low Carbon Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-001", "title": "Urban Design Handbook", "category": "Urban Design & Public Realm", "source": "Design Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-002", "title": "Streets for People", "category": "Urban Design & Public Realm", "source": "Street Design Guide", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-003", "title": "Public Space Design", "category": "Urban Design & Public Realm", "source": "Place-making Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-004", "title": "Walkability and Complete Streets", "category": "Urban Design & Public Realm", "source": "Mobility Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-005", "title": "Placemaking Handbook", "category": "Urban Design & Public Realm", "source": "Public Realm Guide", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-006", "title": "Landscape Urbanism Reader", "category": "Urban Design & Public Realm", "source": "Theory Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-007", "title": "The Image of the City", "category": "Urban Design & Public Realm", "source": "Classic Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "URB-008", "title": "Cities for People", "category": "Urban Design & Public Realm", "source": "Human-scale Design", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-001", "title": "Solar PV System Design Manual", "category": "Solar & Renewable Energy", "source": "Technical Manual", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-002", "title": "MNRE Solar Rooftop Guidelines", "category": "Solar & Renewable Energy", "source": "Government Guidance", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-003", "title": "Renewable Energy Systems", "category": "Solar & Renewable Energy", "source": "Core Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-004", "title": "Wind Energy Explained", "category": "Solar & Renewable Energy", "source": "Energy Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-005", "title": "Energy Efficiency Manual", "category": "Solar & Renewable Energy", "source": "Efficiency Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-006", "title": "Net Metering and Grid Integration", "category": "Solar & Renewable Energy", "source": "Policy Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-007", "title": "Green Power Technologies", "category": "Solar & Renewable Energy", "source": "Technology Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}, {"id": "SOL-008", "title": "Energy Audit and Management", "category": "Solar & Renewable Energy", "source": "Audit Reference", "status": "Catalogued", "year": "", "localPdf": "", "keywords": "reference manual guidance standard", "notes": "Catalogued reference; local PDF may be added later"}];
-    const state = { search:'', category:'', sort:'title-asc' };
-    const el = (id) => document.getElementById(id);
-    const catalogue = el('catalogue');
-    const chips = el('chips');
-    const categories = [...new Set(BOOKS.map(b => b.category))];
+    const DOCS = [
+      {title:'Environmental Impact Assessment Methodologies', author:'Author not specified in uploaded copy', type:'Book / Manual', category:'Environmental Impact Assessment', file:'pdfs/env-eia-001.pdf'},
+      {title:'Methods of Environmental Impact Assessment', author:'Peter Morris; Riki Therivel', type:'Edited Book', category:'Environmental Impact Assessment', file:'pdfs/env-eia-002.pdf'},
+      {title:'Handbook of Environmental Impact Assessment', author:'Judith Petts', type:'Edited Handbook', category:'Environmental Impact Assessment', file:'pdfs/env-eia-003.pdf'},
+      {title:'Introduction to Environmental Impact Assessment', author:'John Glasson; Riki Therivel; Andrew Chadwick', type:'Book', category:'Environmental Impact Assessment', file:'pdfs/env-eia-004.pdf'},
 
-    function updateStats(visible) {
-      el('totalDocs').textContent = BOOKS.length;
-      el('totalCats').textContent = categories.length;
-      el('localDocs').textContent = BOOKS.filter(b => b.localPdf).length;
-      el('visibleDocs').textContent = visible.length;
+      {title:'Wastewater Engineering: Treatment and Reuse', author:'Metcalf & Eddy; George Tchobanoglous; Franklin L. Burton; H. David Stensel', type:'Engineering Textbook', category:'Environmental Engineering / Pollution', file:'pdfs/eng-pol-001.pdf'},
+      {title:'Environmental Chemistry', author:'IGNOU / School of Inter-disciplinary and Trans-disciplinary Studies', type:'Course Book', category:'Environmental Engineering / Pollution', file:'pdfs/eng-pol-002.pdf'},
+
+      {title:'Environmental Management Systems: An Implementation Guide for Small and Medium-Sized Organizations', author:'Philip J. Stapleton; Margaret A. Glover; S. Petie Davis', type:'Implementation Guide', category:'ISO / EMS / Audit / Quality', file:'pdfs/iso-ems-001.pdf'},
+      {title:'ISO 9001:2015 Quality Management Systems — Requirements', author:'ISO', type:'Standard', category:'ISO / EMS / Audit / Quality', file:'pdfs/iso-ems-002.pdf'},
+      {title:'Guidance on Environmental Auditing', author:'INTOSAI WGEA', type:'Audit Guidance', category:'ISO / EMS / Audit / Quality', file:'pdfs/iso-ems-003.pdf'},
+      {title:'Environmental Management Systems: A Step-by-Step Guide to Implementation and Maintenance', author:'Christopher Sheldon; Mark Yoxon', type:'Book', category:'ISO / EMS / Audit / Quality', file:'pdfs/iso-ems-004.pdf'},
+
+      {title:'The Environment (Protection) Act, 1986', author:'Parliament of India', type:'Act / Rules', category:'Environmental Laws (India)', file:'pdfs/law-ind-001.pdf'},
+
+      {title:'Remote Sensing and GIS', author:'Basudeb Bhatta', type:'Book', category:'GIS / Modelling / Remote Sensing', file:'pdfs/gis-mod-001.pdf'},
+      {title:'Environmental Modeling: A Practical Introduction', author:'Michael J. Barnsley', type:'Book', category:'GIS / Modelling / Remote Sensing', file:'pdfs/gis-mod-002.pdf'},
+
+      {title:'Environmental Risk Assessment Handbook', author:'Author not specified in uploaded copy', type:'Handbook / Chapter', category:'Risk / Safety / Project / Audit', file:'pdfs/risk-aud-001.pdf'},
+      {title:'Risk Assessment in Engineering: Principles, System Representation & Risk Criteria', author:'M. H. Faber (Editor)', type:'Guideline / Reference', category:'Risk / Safety / Project / Audit', file:'pdfs/risk-aud-002.pdf'}
+    ];
+
+    const state = {search:'', category:'', sort:'title-asc'};
+    const $ = (id)=>document.getElementById(id);
+    const categories = [...new Set(DOCS.map(d=>d.category))];
+
+    function uniqueAuthorsCount(){
+      const names = new Set();
+      DOCS.forEach(d => d.author.split(';').map(s=>s.trim()).filter(Boolean).forEach(a=>names.add(a)));
+      return names.size;
     }
 
-    function buildChips() {
-      chips.innerHTML = categories.map(cat => `<button class="chip ${state.category===cat?'active':''}" data-cat="${cat}">${cat}</button>`).join('');
-      chips.querySelectorAll('.chip').forEach(btn => btn.addEventListener('click', () => { state.category = btn.dataset.cat === state.category ? '' : btn.dataset.cat; render(); }));
+    function buildChips(){
+      $('chips').innerHTML = categories.map(cat => `<button class="chip ${state.category===cat?'active':''}" data-cat="${cat}">${cat}</button>`).join('');
+      document.querySelectorAll('.chip').forEach(btn => btn.addEventListener('click', ()=>{ state.category = state.category === btn.dataset.cat ? '' : btn.dataset.cat; render(); }));
     }
 
-    function sortBooks(items) {
-      const arr = [...items];
-      switch(state.sort) {
-        case 'title-desc': arr.sort((a,b)=>b.title.localeCompare(a.title)); break;
-        case 'category-asc': arr.sort((a,b)=> a.category.localeCompare(b.category) || a.title.localeCompare(b.title)); break;
-        case 'id-asc': arr.sort((a,b)=> a.id.localeCompare(b.id)); break;
-        case 'status-desc': arr.sort((a,b)=> (b.localPdf ? 1:0) - (a.localPdf ? 1:0) || a.title.localeCompare(b.title)); break;
-        default: arr.sort((a,b)=>a.title.localeCompare(b.title));
-      }
-      return arr;
-    }
-
-    function filteredBooks() {
+    function filterDocs(){
       const q = state.search.trim().toLowerCase();
-      return sortBooks(BOOKS.filter(book => {
-        const matchesCategory = !state.category || book.category === state.category;
-        const hay = `${book.title} ${book.id} ${book.category} ${book.source} ${book.keywords} ${book.notes}`.toLowerCase();
-        const matchesSearch = !q || hay.includes(q);
-        return matchesCategory && matchesSearch;
-      }));
+      let items = DOCS.filter(d => {
+        const hay = `${d.title} ${d.author} ${d.type} ${d.category}`.toLowerCase();
+        return (!state.category || d.category === state.category) && (!q || hay.includes(q));
+      });
+      switch(state.sort){
+        case 'title-desc': items.sort((a,b)=>b.title.localeCompare(a.title)); break;
+        case 'author-asc': items.sort((a,b)=>a.author.localeCompare(b.author) || a.title.localeCompare(b.title)); break;
+        case 'category-asc': items.sort((a,b)=>a.category.localeCompare(b.category) || a.title.localeCompare(b.title)); break;
+        default: items.sort((a,b)=>a.title.localeCompare(b.title));
+      }
+      return items;
     }
 
-    function card(book) {
-      const available = !!book.localPdf;
+    function card(d){
       return `
         <article class="card">
-          <div class="doc-top">
-            <h3>${book.title}</h3>
-            <span class="badge ${available ? 'available' : 'catalogued'}">${available ? 'Available' : 'Catalogued'}</span>
+          <div class="title-row">
+            <h3>${d.title}</h3>
+            <span class="tag">PDF</span>
           </div>
-          <div class="kv">
-            <div>Document ID</div><div>${book.id}</div>
-            <div>Category</div><div>${book.category}</div>
-            <div>Source</div><div>${book.source}</div>
-            <div>Library Note</div><div>${book.notes}</div>
+          <div class="meta">
+            <div>Author</div><div>${d.author}</div>
+            <div>Type</div><div>${d.type}</div>
+            <div>Category</div><div>${d.category}</div>
+            <div>Format</div><div>PDF Document</div>
           </div>
           <div class="actions">
-            <a href="#" class="btn primary ${available ? '' : 'disabled'}" data-view="${available ? book.localPdf : ''}" data-title="${book.title.replace(/"/g,'&quot;')}">View Document</a>
-            <a href="${available ? book.localPdf : '#'}" class="btn secondary ${available ? '' : 'disabled'}" ${available ? 'download' : ''}>Download Copy</a>
+            <a href="#" class="btn primary" data-view="${d.file}" data-title="${d.title.replace(/"/g,'&quot;')}">View Online</a>
+            <a href="${d.file}" class="btn secondary" download>Download PDF</a>
           </div>
         </article>`;
     }
 
-    function render() {
+    function render(){
       buildChips();
-      const visible = filteredBooks();
-      updateStats(visible);
-      catalogue.innerHTML = visible.length ? visible.map(card).join('') : `<div class="card"><h3>No documents found</h3><div class="small">Try another keyword or clear the category filter.</div></div>`;
-      catalogue.querySelectorAll('[data-view]').forEach(a => a.addEventListener('click', (e) => {
-        const pdf = a.dataset.view; if(!pdf) return;
+      const items = filterDocs();
+      $('countDocs').textContent = DOCS.length;
+      $('countCats').textContent = categories.length;
+      $('countAuthors').textContent = uniqueAuthorsCount();
+      $('countVisible').textContent = items.length;
+      $('grid').innerHTML = items.length ? items.map(card).join('') : `<article class="card"><h3>No documents found</h3><div class="help">Try another search or clear the category filter.</div></article>`;
+      document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', (e) => {
         e.preventDefault();
-        el('viewerTitle').textContent = a.dataset.title;
-        el('viewerFrame').src = pdf + '#toolbar=1&navpanes=0&scrollbar=1';
-        el('viewerModal').classList.add('open');
+        $('viewerTitle').textContent = btn.dataset.title;
+        $('viewerFrame').src = btn.dataset.view + '#toolbar=1&navpanes=0&scrollbar=1';
+        $('viewerOverlay').classList.add('open');
       }));
     }
 
-    el('searchInput').addEventListener('input', e => { state.search = e.target.value; render(); });
-    el('sortSelect').addEventListener('change', e => { state.sort = e.target.value; render(); });
-    el('clearFilters').addEventListener('click', () => { state.search=''; state.category=''; el('searchInput').value=''; render(); });
-    el('closeViewer').addEventListener('click', () => { el('viewerModal').classList.remove('open'); el('viewerFrame').src=''; });
-    el('viewerModal').addEventListener('click', (e)=>{ if(e.target===el('viewerModal')) { el('viewerModal').classList.remove('open'); el('viewerFrame').src=''; } });
+    $('searchInput').addEventListener('input', (e)=>{ state.search = e.target.value; render(); });
+    $('sortSelect').addEventListener('change', (e)=>{ state.sort = e.target.value; render(); });
+    $('clearBtn').addEventListener('click', ()=>{ state.search=''; state.category=''; $('searchInput').value=''; render(); });
+    $('closeViewer').addEventListener('click', ()=>{ $('viewerOverlay').classList.remove('open'); $('viewerFrame').src=''; });
+    $('viewerOverlay').addEventListener('click', (e)=>{ if(e.target === $('viewerOverlay')){ $('viewerOverlay').classList.remove('open'); $('viewerFrame').src=''; } });
 
     render();
   </script>
