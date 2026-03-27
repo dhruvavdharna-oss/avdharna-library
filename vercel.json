@@ -1,8 +1,14 @@
 {
-  "cleanUrls": false,
-  "trailingSlash": true,
   "redirects": [
-    {"source": "/", "destination": "/library/", "permanent": false},
-    {"source": "/library", "destination": "/library/", "permanent": false}
+    {
+      "source": "/",
+      "destination": "/library/",
+      "permanent": false
+    },
+    {
+      "source": "/library",
+      "destination": "/library/",
+      "permanent": false
+    }
   ]
 }
