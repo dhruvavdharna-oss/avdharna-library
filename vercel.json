@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/library", "destination": "/library/index.html" },
+    { "source": "/library/(.*)", "destination": "/library/$1" }
+  ]
+}
