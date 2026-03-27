@@ -1,1 +1,1 @@
-Upload these files directly to your GitHub repo root. Then import repo to Vercel. The library lives at /library/ and is a single-file page, so CSS/JS/books cannot break due to missing asset paths.
+Upload this project to GitHub and deploy on Vercel. PDFs already added under library/pdfs for the 4 uploaded EIA books. Add more PDFs with matching document IDs to extend the repository.
